@@ -1,37 +1,30 @@
-#include <GLFW/glfw3.h>
+#include "Monsta/Window/MWindow.h"
+#include <stdio.h>
+
+using namespace Monsta;
 
 int main(void)
 {
-    GLFWwindow* window;
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
-
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
+    MWindow* window = MWindow::get_instance();
+    if (window == nullptr)
     {
-        glfwTerminate();
-        return -1;
+        printf("%s\n", "Window is null!");
+        return 1;
     }
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+    window->init_window(900, 500, "Test");
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window->get_glfw_window()))
     {
-        /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
+        glfwSwapBuffers(window->get_glfw_window());
         glfwPollEvents();
     }
 
-    glfwTerminate();
+    window->deinit_window();
+    printf("%s\n", "De-allocated window!");
+
     return 0;
+
 }

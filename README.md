@@ -1,5 +1,9 @@
 # Monsta Game Engine
 
+<img src="./resources/MONSTA.jpg"/>
+
+---
+
 A game engine designed to create realistic and horrifying game expriences.
 
 Written in C++17
