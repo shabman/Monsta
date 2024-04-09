@@ -1,6 +1,8 @@
 # Monsta Game Engine
 
-<img src="./resources/MONSTA.jpg"/>
+<p align="center">
+    <img src="./resources/MONSTA.jpg"/>
+</p>
 
 ---
 
