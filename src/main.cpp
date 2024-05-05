@@ -1,12 +1,46 @@
 #include "Monsta/Window/MWindow.h"
-#include <stdio.h>
+#include "Monsta/Events/Input/InputListener.h"
+#include "Monsta/Events/Input/InputAdapter.h"
+#include "Monsta/Graphics/Renderer/GameLoop.h"
+
+#include <cstdarg>
+#include <iostream>
+#include "spdlog/spdlog.h"
 
 using namespace Monsta;
 
-int main(void)
+// FIXME: Shit gets called twice
+class TestInput : public InputListener {
+
+public:
+    TestInput() = default;
+    ~TestInput() override { }
+
+public:
+    void onInputEvent(const InputEventType& event, ...) noexcept override {
+        va_list args;
+        if (event == InputEventType::INPUT_KEY_CALLBACK) {
+            va_start(args, 2);
+            int key = va_arg(args, int);
+            int action = va_arg(args, int);
+            if (action == GLFW_RELEASE) return;
+            std::cout << "Key callback triggered!\n";
+            if (key == GLFW_KEY_SPACE)
+                std::cout << "Space bar pressed!\n";
+        }
+        va_end(args);
+    }
+
+};
+
+int main()
 {
 
+    const TestInput input;
+
     MWindow* window = MWindow::get_instance();
+    InputAdapter::add_listener(&input);
+
     if (window == nullptr)
     {
         printf("%s\n", "Window is null!");
@@ -15,15 +49,11 @@ int main(void)
 
     window->init_window(900, 500, "Monsta Game Engine Demo");
 
-    while (!glfwWindowShouldClose(window->get_glfw_window()))
-    {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glfwSwapBuffers(window->get_glfw_window());
-        glfwPollEvents();
-    }
+    Renderer::GameLoop* main_loop = Renderer::GameLoop::get_instance();
+    main_loop->start(window->get_glfw_window());
 
     window->deinit_window();
-    printf("%s\n", "De-allocated window!");
+    spdlog::info("De-allocated window!");
 
     return 0;
 

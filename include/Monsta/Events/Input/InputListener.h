@@ -14,7 +14,7 @@ namespace Monsta
     {
 
     public:
-        InputListener();
+        InputListener() = default;
         virtual ~InputListener() = 0;
 
     public:

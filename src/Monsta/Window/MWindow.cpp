@@ -1,9 +1,10 @@
 #include "Monsta/Window/MWindow.h"
-
 #include "Monsta/Events/Input/InputAdapter.h"
 #include "Monsta/Platform/Platform.h"
 #include "Monsta/Platform/Version.h"
 #include "Monsta/Events/Window/WindowAdapter.h"
+
+#include <iostream>
 
 Monsta::MWindow* __mwindow = nullptr;
 
@@ -48,7 +49,8 @@ namespace Monsta
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, LIB_MONSTA_OPENGL_MINOR);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+        // NOTE: Might cause problems later on if not un-commented
+        //glfwWindowHint(GLFW_OPENGL_CORE_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 #endif
 
         this->m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);

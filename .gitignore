@@ -1,4 +1,5 @@
 .vscode
+.idea
 .DS_Store
 
 makefile
@@ -7,3 +8,4 @@ CMakeFiles
 cmake_install.cmake
 
 a
+Testing

@@ -9,7 +9,7 @@ namespace Monsta
     void WindowAdapter::RegisterWindowFocusEvent(GLFWwindow* window, int isFocused) noexcept
     {
         spdlog::info("Window Call back called!");
-        for (auto& event : s_Events)
+        for (const auto& event : s_Events)
         {
             event->onWindowEvent( 
                 ( isFocused ? WindowEventType::WINDOW_EVENT_FOCUS_GAIN : WindowEventType::WINDOW_EVENT_FOCUS_LOST )
