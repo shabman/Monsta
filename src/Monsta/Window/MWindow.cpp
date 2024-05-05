@@ -1,6 +1,9 @@
 #include "Monsta/Window/MWindow.h"
+
+#include "Monsta/Events/Input/InputAdapter.h"
 #include "Monsta/Platform/Platform.h"
 #include "Monsta/Platform/Version.h"
+#include "Monsta/Events/Window/WindowAdapter.h"
 
 Monsta::MWindow* __mwindow = nullptr;
 
@@ -49,11 +52,16 @@ namespace Monsta
 #endif
 
         this->m_Window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+
         if (!this->m_Window)
         {
             glfwTerminate();
             return false;
         }
+
+        glfwSetWindowFocusCallback(this->m_Window, WindowAdapter::RegisterWindowFocusEvent);
+        glfwSetKeyCallback(this->m_Window, InputAdapter::InputKeycallBack);
+        glfwSetCursorPosCallback(this->m_Window, InputAdapter::InputMousePositionCallback);
 
         glfwMakeContextCurrent(this->m_Window);
         glViewport(0, 0, width, height);

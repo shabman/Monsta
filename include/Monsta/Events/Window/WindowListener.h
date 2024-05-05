@@ -1,5 +1,5 @@
-#ifndef __LIBMONSTA_EVENTS_WINDOWLISTENER_H__
-#define __LIBMONSTA_EVENTS_WINDOWLISTENER_H__
+#ifndef __LIBMONSTA_EVENTS_WINDOW_WINDOWLISTENER_H__
+#define __LIBMONSTA_EVENTS_WINDOW_WINDOWLISTENER_H__
 
 namespace Monsta
 {
@@ -21,10 +21,11 @@ namespace Monsta
         virtual ~WindowListener() = 0;
 
     public:
-        virtual void onWindowEvent(const WindowEventType&) noexcept = 0;
+        virtual void onWindowEvent(const WindowEventType&, ...) noexcept = 0;
 
     };
 
 }
 
-#endif /* __LIBMONSTA_EVENTS_WINDOWLISTENER_H__ */
+#endif /* #ifndef __LIBMONSTA_EVENTS_WINDOW_WINDOWLISTENER_H__
+ */

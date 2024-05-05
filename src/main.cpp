@@ -13,7 +13,7 @@ int main(void)
         return 1;
     }
 
-    window->init_window(900, 500, "Test");
+    window->init_window(900, 500, "Monsta Game Engine Demo");
 
     while (!glfwWindowShouldClose(window->get_glfw_window()))
     {

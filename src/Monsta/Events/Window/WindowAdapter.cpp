@@ -1,17 +1,21 @@
-#include "Monsta/Events/WindowAdapter.h"
+#include "Monsta/Events/Window/WindowAdapter.h"
+#include "spdlog/spdlog.h"
 
 namespace Monsta
 {
 
-    namespace Events
+    std::vector<WindowListener*> WindowAdapter::s_Events;
+
+    void WindowAdapter::RegisterWindowFocusEvent(GLFWwindow* window, int isFocused) noexcept
     {
-        void on_window_event()
+        spdlog::info("Window Call back called!");
+        for (auto& event : s_Events)
         {
-            auto x = WindowAdapter::s_Events;
+            event->onWindowEvent( 
+                ( isFocused ? WindowEventType::WINDOW_EVENT_FOCUS_GAIN : WindowEventType::WINDOW_EVENT_FOCUS_LOST )
+            );
         }
     }
-
-    std::vector<WindowListener*> WindowAdapter::s_Events;
 
     bool WindowAdapter::already_exists(const WindowListener* listener) noexcept
     {

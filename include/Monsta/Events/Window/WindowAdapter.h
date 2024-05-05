@@ -1,8 +1,9 @@
-#ifndef __LIBMONSTA_EVENTS_WINDOWADAPTER_H__
-#define __LIBMONSTA_EVENTS_WINDOWADAPTER_H__
+#ifndef __LIBMONSTA_EVENTS_WINDOW_WINDOWADAPTER_H__
+#define __LIBMONSTA_EVENTS_WINDOW_WINDOWADAPTER_H__
 
 #include "WindowListener.h"
 
+#include <GLFW/glfw3.h>
 #include <vector>
 
 namespace Monsta
@@ -13,6 +14,9 @@ namespace Monsta
 
     private:
         static std::vector<WindowListener*> s_Events;
+
+    public:
+        static void RegisterWindowFocusEvent(GLFWwindow*, int) noexcept;
 
     private:
         WindowAdapter()     = delete;
@@ -31,4 +35,4 @@ namespace Monsta
 
 }
 
-#endif /* __LIBMONSTA_EVENTS_WINDOWADAPTER_H__ */
+#endif /* __LIBMONSTA_EVENTS_WINDOW_WINDOWADAPTER_H__ */
