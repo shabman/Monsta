@@ -106,7 +106,13 @@
 				4,
 				5,
 				6,
-				7
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
 			]
 		}
 	],
@@ -139,7 +145,7 @@
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework OpenAL",
+				"fragment" : "-framework CoreServices -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework OpenAL",
 				"role" : "libraries"
 			},
 			{
@@ -169,19 +175,19 @@
 				4,
 				5,
 				6,
-				7
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				8,
-				9,
-				10,
-				11,
-				12,
-				13,
 				14,
 				15,
 				16,
@@ -385,12 +391,31 @@
 				214,
 				215,
 				216,
-				217
+				217,
+				218,
+				219,
+				220,
+				221,
+				222,
+				223,
+				224,
+				225,
+				226,
+				227,
+				228,
+				229,
+				230
 			]
 		}
 	],
 	"sources" : 
 	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Engine.cpp",
+			"sourceGroupIndex" : 0
+		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
@@ -418,6 +443,30 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Graphics/Context/GraphicsContext.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Graphics/Context/OpenGLContext.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Graphics/Pipeline/VAO.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Graphics/Pipeline/VBO.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "src/Monsta/Graphics/Renderer/GameLoop.cpp",
 			"sourceGroupIndex" : 0
 		},
@@ -425,6 +474,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/Monsta/Graphics/Shaders/ShaderReader.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Monsta/Graphics/Shaders/ShaderSystem.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -501,6 +556,11 @@
 		},
 		{
 			"backtrace" : 1,
+			"path" : "include/Monsta/Engine.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
 			"path" : "include/Monsta/Events/Input/InputAdapter.h",
 			"sourceGroupIndex" : 1
 		},
@@ -521,7 +581,22 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/Monsta/Graphics/Pipeline/VertexBuffers.h",
+			"path" : "include/Monsta/Graphics/Context/GraphicsContext.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Monsta/Graphics/Context/OpenGLContext.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Monsta/Graphics/Pipeline/VAO.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Monsta/Graphics/Pipeline/VBO.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -541,12 +616,22 @@
 		},
 		{
 			"backtrace" : 1,
+			"path" : "include/Monsta/Graphics/Shaders/ShaderSystem.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
 			"path" : "include/Monsta/Platform/Platform.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
 			"path" : "include/Monsta/Platform/Version.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Monsta/System/OS.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -1487,6 +1572,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "include/spdlog/version.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/stb/std_image.h",
 			"sourceGroupIndex" : 1
 		}
 	],

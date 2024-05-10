@@ -9,17 +9,21 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
+#include "Monsta/Graphics/Context/GraphicsContext.h"
+
 namespace Monsta::Renderer
 {
-    class GameLoop
+    class GameLoop final
     {
     private:
-        std::vector<GameObject*> s_WorldObjects;
+        std::vector<GameObject*> m_WorldObjects;
+        Context::GraphicsContext* m_Context;
+        unsigned int m_VertexBuffer, m_VertexArray, m_IndexBuffer;
     private:
-        GameLoop() = default;
+        GameLoop(const Context::GraphicsContext*);
         ~GameLoop() = default;
     public:
-        static GameLoop* get_instance();
+        static GameLoop* get_instance(const Context::GraphicsContext*);
 
         void has_object(const GameObject*);
         void add_object(const GameObject*);
@@ -27,6 +31,8 @@ namespace Monsta::Renderer
 
         void start(GLFWwindow*);
         void cleanup();
+
+        void set_context(Context::GraphicsContext*);
     };
 }
 

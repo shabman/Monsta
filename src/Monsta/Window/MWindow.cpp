@@ -1,10 +1,10 @@
+#include <GL/glew.h>
+
 #include "Monsta/Window/MWindow.h"
 #include "Monsta/Events/Input/InputAdapter.h"
 #include "Monsta/Platform/Platform.h"
 #include "Monsta/Platform/Version.h"
 #include "Monsta/Events/Window/WindowAdapter.h"
-
-#include <iostream>
 
 Monsta::MWindow* __mwindow = nullptr;
 
@@ -13,12 +13,22 @@ namespace Monsta
 
     MWindow::MWindow()
     {
+        this->m_Window = nullptr;
+        this->m_Context = nullptr;
         this->did_init = glfwInit();
+        this->m_Width = 0;
+        this->m_Height = 0;
+        this->m_Title = "";
+        this->m_ContextMode = Context::GraphicsContextMode::MONSTA_UNKNOWN_GRAPHICS;
     }
     
     MWindow::~MWindow()
     {
-        glfwTerminate(); 
+        if (this->m_Context != nullptr)
+        {
+            delete this->m_Context;
+        }
+        glfwTerminate();
     }
 
     MWindow* MWindow::get_instance() noexcept
@@ -61,12 +71,31 @@ namespace Monsta
             return false;
         }
 
+        this->m_ContextMode = Context::GraphicsContextMode::MONSTA_OPENGL_GRAPHICS;
+
         glfwSetWindowFocusCallback(this->m_Window, WindowAdapter::RegisterWindowFocusEvent);
         glfwSetKeyCallback(this->m_Window, InputAdapter::InputKeycallBack);
         glfwSetCursorPosCallback(this->m_Window, InputAdapter::InputMousePositionCallback);
 
-        glfwMakeContextCurrent(this->m_Window);
+        // TODO: Allow it to be customised by the user
+        switch (this->m_ContextMode)
+        {
+            case Context::GraphicsContextMode::MONSTA_OPENGL_GRAPHICS:
+            {
+                this->m_Context = new Context::OpenGLContext(this->m_Window);
+                break;
+            }
+            case Context::GraphicsContextMode::MONSTA_METAL_API_GRAPHICS:
+            case Context::GraphicsContextMode::MONSTA_UNKNOWN_GRAPHICS: break;
+        }
+
         glViewport(0, 0, width, height);
+
+        if (glewInit() != GLEW_OK)
+        {
+            glfwTerminate();
+            return false;
+        }
 
         return true;
     }
@@ -97,6 +126,11 @@ namespace Monsta
     const char* MWindow::get_title() const noexcept
     {
         return this->m_Title;
+    }
+
+    Context::GraphicsContext* MWindow::get_context() const noexcept
+    {
+        return this->m_Context;
     }
 
 }

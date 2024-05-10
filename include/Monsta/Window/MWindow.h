@@ -2,6 +2,7 @@
 #define __LIBMONSTA_WINDOW_MWINDOW_H__
 
 #include <GLFW/glfw3.h>
+#include "Monsta/Graphics/Context/OpenGLContext.h"
 
 namespace Monsta
 {
@@ -15,6 +16,8 @@ namespace Monsta
         int m_Height;
         const char* m_Title;
         bool did_init;
+        Context::GraphicsContextMode m_ContextMode;
+        Context::GraphicsContext* m_Context;
 
     private:
         MWindow();
@@ -30,7 +33,7 @@ namespace Monsta
         const int get_width() const noexcept;
         const int get_height() const noexcept;
         const char* get_title() const noexcept;
-
+        Context::GraphicsContext* get_context() const noexcept;
     };
 
 }
