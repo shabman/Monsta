@@ -3,6 +3,9 @@
 namespace Monsta
 {
 
-    WindowListener::~WindowListener() { }
+WindowListener::~
+WindowListener ()
+{
+}
 
 }

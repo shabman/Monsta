@@ -27,7 +27,7 @@ namespace Monsta::Context
         virtual void swap_buffers() = 0;
 
     public:
-        virtual void start_renderer() = 0;
+        virtual void render() = 0;
         virtual void stop_renderer() = 0;
     };
 }

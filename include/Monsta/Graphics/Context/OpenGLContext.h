@@ -32,7 +32,7 @@ namespace Monsta::Context
         void swap_buffers() override;
 
     public:
-        void start_renderer() override;
+        void render() override;
         void stop_renderer() override;
     };
 }
