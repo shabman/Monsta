@@ -17,7 +17,7 @@ elseif(APPLE)
     file(GLOB_RECURSE MONSTA_LIBS_RELEASE CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/lib/Apple/release/*.a")
 endif()
 
-add_executable(a "${MONSTA_SOURCES}" "${MONSTA_HEADERS}")
+add_executable(MonstaDemo "${MONSTA_SOURCES}" "${MONSTA_HEADERS}")
 
 link_directories(lib)
 
@@ -28,16 +28,16 @@ if(APPLE)
     find_package(OpenAL REQUIRED)
 endif()
 
-target_include_directories(a PUBLIC ${OPENGL_INCLUDE_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/include/")
+target_include_directories(MonstaDemo PUBLIC ${OPENGL_INCLUDE_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
-target_link_libraries(a "${OPENGL_LIBRARIES}" "${MONSTA_LIBS_DEBUG}")
+target_link_libraries(MonstaDemo "${OPENGL_LIBRARIES}" "${MONSTA_LIBS_DEBUG}")
 
 if(WIN32)
-    set_property(TARGET a PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/asset")
+    set_property(TARGET MonstaDemo PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/asset")
 elseif(LINUX)
     find_package(GLEW REQUIRED)
     find_package(glfw3 3.4 REQUIRED)
     target_link_libraries(a GLEW::GLEW glfw)
 elseif(APPLE)
-    target_link_libraries(a "-framework CoreServices -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework OpenAL" ${OPENAL_LIBRARY})
+    target_link_libraries(MonstaDemo "-framework CoreServices -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework OpenAL" ${OPENAL_LIBRARY})
 endif()

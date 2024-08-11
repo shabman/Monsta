@@ -7,9 +7,16 @@
 ---
 
 A game engine designed to create realistic and horrifying game expriences.
+Uses C++17
 
-Written in C++17
+## Platforms
 
-See LICENSE for more. This game engine is private property of Mustafa Malik.
+Platform | Windows | macOS | Linux
+--- | --- | --- | ---
+Supported | ✅ | ✅ | ✅
 
-`Copyright (c) 2024 Mustafa Malik. All Rights Reserved.`
+---
+
+This game engine is ~~private property~~ now open sourced!
+
+`Copyright (c) 2024 Mustafa Malik. See LICENSE for more`
