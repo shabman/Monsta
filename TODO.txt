@@ -1,7 +1,0 @@
-Things I need to add:
-    Vertex Array
-    Vertex Buffer
-    Index Buffer
-    Shader Program
-
-*Shader Program isn't needed RN as of (7th May Tues) since we have a default shader by the GPU*
