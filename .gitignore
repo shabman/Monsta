@@ -8,6 +8,7 @@ makefile
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
+lib
 
 a
 Testing
