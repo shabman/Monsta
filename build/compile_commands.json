@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/mustafamalik/Desktop/Monsta/build",
+  "command": "/usr/bin/clang++ -DGLEW_STATIC -I/Users/mustafamalik/Desktop/Monsta/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -o CMakeFiles/MonstaDemo.dir/src/main.cpp.o -c /Users/mustafamalik/Desktop/Monsta/src/main.cpp",
+  "file": "/Users/mustafamalik/Desktop/Monsta/src/main.cpp",
+  "output": "CMakeFiles/MonstaDemo.dir/src/main.cpp.o"
+}
+]
