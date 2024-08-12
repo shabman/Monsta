@@ -20,5 +20,6 @@
 #define LIB_MONSTA_H
 
 #include "Config.h"
+#include "Core/Window.h"
 
 #endif /* LIB_MONSTA_H */
