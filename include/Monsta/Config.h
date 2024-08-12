@@ -51,6 +51,9 @@
 # endif
 #endif
 
+#define MONSTA_OPENGL_MAJOR_VERSION 4
+#define MONSTA_OPENGL_MINOR_VERSION 5
+
 // clang-format on
 
 #endif /* LIB_MONSTA_CONFIG_H */
