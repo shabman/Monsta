@@ -19,30 +19,38 @@
 #ifndef LIB_MONSTA_WINDOW_H
 #define LIB_MONSTA_WINDOW_H
 
-#include <cstdint>
+#include <Monsta/Renderer/Context/Context.h>
+
 #include <GLFW/glfw3.h>
+#include <cstdint>
 
 namespace Monsta::Core
 {
-    class Window final
-    {
-    private:
-        GLFWwindow* m_Window;
-        uint32_t m_Width;
-        uint32_t m_Height;
-    
-    public:
-        Window();
-        ~Window();
-    
-    public:
-        void show() noexcept;
-        void close() noexcept;
 
-        /// TODO: Make it a pointer of Context*
-        void attachContext(void*) noexcept;
-        void start() noexcept;
-    };
+class Window final
+{
+private:
+  GLFWwindow *m_window;
+  const char *m_title;
+  Renderer::Context *m_ctx;
+
+  uint32_t m_width;
+  uint32_t m_height;
+  uint32_t m_id;
+
+public:
+  Window ( uint32_t, uint32_t, const char * );
+  ~Window ();
+
+public:
+  void show ( bool shared = false ) noexcept;
+  void close () noexcept;
+
+  /// TODO: Make it a pointer of Context*
+  void attachContext ( void * ) noexcept;
+  void start () noexcept;
+};
+
 }
 
 #endif /* LIB_MONSTA_WINDOW_H */
