@@ -30,25 +30,32 @@ namespace Monsta::Core
 class Window final
 {
 private:
-  GLFWwindow *m_window;
-  const char *m_title;
-  Renderer::Context *m_ctx;
+  GLFWwindow* m_window;
+  const char* m_title;
+  Renderer::Context* m_ctx;
 
   uint32_t m_width;
   uint32_t m_height;
-  uint32_t m_id;
 
 public:
-  Window ( uint32_t, uint32_t, const char * );
+  Window ( uint32_t, uint32_t, const char* );
   ~Window ();
 
 public:
-  void show ( bool shared = false ) noexcept;
+  void init () noexcept;
   void close () noexcept;
 
-  /// TODO: Make it a pointer of Context*
-  void attachContext ( void * ) noexcept;
+public:
+  void attachContext ( const Renderer::Context* ) noexcept;
   void start () noexcept;
+
+public:
+  GLFWwindow* getCoreWindow () const noexcept;
+  const char* getTitle () const noexcept;
+  Renderer::Context* getContext () const noexcept;
+
+  uint32_t getWidth () const noexcept;
+  uint32_t getHeight () const noexcept;
 };
 
 }

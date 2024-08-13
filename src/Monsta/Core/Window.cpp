@@ -17,93 +17,83 @@
  */
 
 #ifdef __APPLE__
-#define GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION // Fuck You Apple (JK Metal Support Soon)
 #endif
 
-#include "Monsta/Core/Window.h"
+#include <GL/glew.h>
+
 #include "Monsta/Config.h"
+#include "Monsta/Core/Window.h"
 
 #include <spdlog/spdlog.h>
 
+static GLFWwindow* __monsta_core_window = nullptr;
 static bool __monsta_glfw_init = false;
-static bool __monsta_hints_set = false;
-
-static uint32_t __monsta_window_index = 0;
-static GLFWwindow *__monsta_shared_window = nullptr;
 
 namespace Monsta::Core
 {
 
-Window::Window ( uint32_t width, uint32_t height, const char *title )
+Window::Window ( uint32_t width, uint32_t height, const char* title )
     : m_width ( width ), m_height ( height ), m_title ( title )
 {
-  m_id = __monsta_window_index;
-
-  if ( !__monsta_glfw_init )
+  // TODO: Maybe just make it return a reference to the parent?
+  if ( __monsta_core_window != nullptr || __monsta_glfw_init )
     {
-      if ( !glfwInit () )
-        {
-          spdlog::error ( "Unable to initialise GLFW. Aborting..." );
-          return;
-        }
-      __monsta_glfw_init = true;
+      spdlog::warn ( "Main Window already exists" );
+      return;
     }
 
-  if ( __monsta_hints_set )
+  if ( !glfwInit () )
     {
-      glfwWindowHint ( GLFW_CONTEXT_VERSION_MAJOR, MONSTA_OPENGL_MAJOR_VERSION );
-      glfwWindowHint ( GLFW_CONTEXT_VERSION_MINOR, MONSTA_OPENGL_MINOR_VERSION );
-      glfwWindowHint ( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
-      glfwWindowHint ( GLFW_SAMPLES, 4 );
+      spdlog::error ( "Failed to initialise GLFW. Aborting..." );
+      return;
+    }
+
+  __monsta_glfw_init = true;
+
+  glfwWindowHint ( GLFW_CONTEXT_VERSION_MAJOR, 3 );
+  glfwWindowHint ( GLFW_CONTEXT_VERSION_MINOR, 3 );
+  glfwWindowHint ( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+  glfwWindowHint ( GLFW_SAMPLES, 4 );
 #ifdef MONSTA_PLAT_MAC
-      glfwWindowHint ( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+  glfwWindowHint ( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+  spdlog::info ( "GLFW macOS Window hints set" );
 #endif
-      __monsta_hints_set = true;
-    }
 
-  __monsta_window_index++;
-  spdlog::info ( "Window Object Created (ID): {}", m_id );
+  spdlog::info ( "GLFW Window Initialised" );
 }
 
 Window::~Window ()
 {
-  if ( m_id == 0 )
-    {
-      __monsta_glfw_init = false;
-      __monsta_hints_set = false;
-      __monsta_window_index = 0;
-      glfwTerminate ();
-
-      spdlog::info ( "Window Parent Deallocated" );
-    }
-  else
-    __monsta_window_index--;
-
-  spdlog::info ( "Window Object Destroyed" );
+  glfwTerminate ();
+  spdlog::info ( "GLFW Window Terminated" );
 }
 
 void
-Window::show ( bool shared ) noexcept
+Window::init () noexcept
 {
-  m_window = glfwCreateWindow ( m_width, m_height, m_title, NULL, ( shared && m_id != 0 ) ? m_window : NULL );
-  if ( m_window == nullptr )
+  if ( ( m_window = glfwCreateWindow ( m_width, m_height, m_title, NULL, NULL ) ) == NULL )
     {
-      if ( m_id == 0 )
-        glfwTerminate ();
-      spdlog::error ( "Unable to create GLFW Window" );
+      spdlog::error ( "GLFW Failed to create Window" );
+      glfwTerminate ();
       return;
     }
 
-  if ( m_id == 0 )
-    __monsta_shared_window = m_window;
-
   glfwMakeContextCurrent ( m_window );
+
+  if ( glewInit () != GLEW_OK )
+    {
+      spdlog::error ( "GLEW Failed to initialise Wrangler" );
+      glfwTerminate ();
+      return;
+    }
 
   int fx, fy;
   glfwGetFramebufferSize ( m_window, &fx, &fy );
-  glViewport ( fx, fy, m_width, m_height );
+  glViewport ( 0, 0, fx, fy );
 
-  spdlog::info ( "GLFW Window Configured" );
+  __monsta_core_window = m_window;
+  spdlog::info ( "GLFW Window & GLEW Ready" );
 }
 
 void
@@ -113,21 +103,53 @@ Window::close () noexcept
 }
 
 void
-Window::attachContext ( void * ) noexcept
+Window::attachContext ( const Renderer::Context* context ) noexcept
 {
+  m_ctx = const_cast<Renderer::Context*> ( context );
 }
 
 void
 Window::start () noexcept
 {
-  spdlog::info ( "Starting Renderer" );
+  spdlog::info ( "[MONSTA]: Starting Renderer" );
   while ( !glfwWindowShouldClose ( m_window ) )
     {
       glClear ( GL_COLOR_BUFFER_BIT );
-      glClearColor ( 1, 1, 0, 1 );
+      glClearColor ( 1.0, 1.0, 0.0, 1.0 );
       glfwPollEvents ();
       glfwSwapBuffers ( m_window );
     }
+  spdlog::info ( "[MONSTA]: Stopping Renderer" );
+}
+
+GLFWwindow*
+Window::getCoreWindow () const noexcept
+{
+  return m_window;
+}
+
+const char*
+Window::getTitle () const noexcept
+{
+  return m_title;
+}
+
+Renderer::Context*
+Window::getContext () const noexcept
+{
+  return m_ctx;
+}
+
+uint32_t
+Window::getWidth () const noexcept
+{
+  return m_width;
+}
+
+uint32_t
+Window::getHeight () const noexcept
+{
+  return m_height;
 }
 
 }
