@@ -16,16 +16,16 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#include "Monsta/Interfaces/EventListener.h"
 
-#include "Config.h"
-#include "Core/Window.h"
+namespace Monsta::Interface
+{
 
-#include "Events/InputEvent.h"
-#include "Interfaces/EventListener.h"
+EventListener::EventListener ()
+{
+}
+EventListener::~EventListener ()
+{
+}
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
-
-#endif /* LIB_MONSTA_H */
+}

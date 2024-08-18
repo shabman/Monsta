@@ -31,6 +31,7 @@ public:
 public:
   virtual void init () noexcept = 0;
   virtual void run () noexcept = 0;
+  virtual void release () noexcept = 0;
 };
 
 }

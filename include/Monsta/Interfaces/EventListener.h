@@ -16,16 +16,24 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#ifndef LIB_MONSTA_EVENTLISTENER_H
+#define LIB_MONSTA_EVENTLISTENER_H
 
-#include "Config.h"
-#include "Core/Window.h"
+namespace Monsta::Interface
+{
 
-#include "Events/InputEvent.h"
-#include "Interfaces/EventListener.h"
+class EventListener
+{
+public:
+  EventListener ();
+  virtual ~EventListener () = 0;
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+public:
+  virtual void onKeyPressed ( int key, int scancode, int action, int mods ) noexcept = 0;
+  virtual void onMouseMove ( double xpos, double ypos ) noexcept = 0;
+  virtual void onMouseClick ( int button, int action, int mods ) noexcept = 0;
+};
 
-#endif /* LIB_MONSTA_H */
+}
+
+#endif /* LIB_MONSTA_EVENTLISTENER_H */

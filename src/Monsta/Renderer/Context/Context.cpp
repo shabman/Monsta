@@ -16,16 +16,12 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#include "Monsta/Renderer/Context/Context.h"
 
-#include "Config.h"
-#include "Core/Window.h"
+namespace Monsta::Renderer
+{
 
-#include "Events/InputEvent.h"
-#include "Interfaces/EventListener.h"
+Context::Context () = default;
+Context::~Context () = default;
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
-
-#endif /* LIB_MONSTA_H */
+}

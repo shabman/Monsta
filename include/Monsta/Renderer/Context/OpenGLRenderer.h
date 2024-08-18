@@ -20,19 +20,26 @@
 #define LIB_MONSTA_OPENGLRENDERER_H
 
 #include "Context.h"
+#include <cstdint>
 
 namespace Monsta::Renderer
 {
 
 class OpenGLRenderer final : public Context
 {
-public:
+private:
+  uint32_t m_vertices;
+
+protected:
   OpenGLRenderer ();
   ~OpenGLRenderer () override;
 
 public:
+  static OpenGLRenderer* getInstance () noexcept;
+
   void init () noexcept override;
   void run () noexcept override;
+  void release () noexcept override;
 };
 
 }

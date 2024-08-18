@@ -24,11 +24,13 @@
 
 #include "Monsta/Config.h"
 #include "Monsta/Core/Window.h"
+#include "Monsta/Events/InputEvent.h"
+#include "Monsta/Renderer/Context/OpenGLRenderer.h"
 
 #include <spdlog/spdlog.h>
 
-static GLFWwindow* __monsta_core_window = nullptr;
-static bool __monsta_glfw_init = false;
+static GLFWwindow* main_window = nullptr;
+static bool is_glfw_init = false;
 
 namespace Monsta::Core
 {
@@ -36,8 +38,7 @@ namespace Monsta::Core
 Window::Window ( uint32_t width, uint32_t height, const char* title )
     : m_width ( width ), m_height ( height ), m_title ( title )
 {
-  // TODO: Maybe just make it return a reference to the parent?
-  if ( __monsta_core_window != nullptr || __monsta_glfw_init )
+  if ( main_window != nullptr || is_glfw_init )
     {
       spdlog::warn ( "Main Window already exists" );
       return;
@@ -49,7 +50,7 @@ Window::Window ( uint32_t width, uint32_t height, const char* title )
       return;
     }
 
-  __monsta_glfw_init = true;
+  is_glfw_init = true;
 
   glfwWindowHint ( GLFW_CONTEXT_VERSION_MAJOR, 3 );
   glfwWindowHint ( GLFW_CONTEXT_VERSION_MINOR, 3 );
@@ -65,8 +66,13 @@ Window::Window ( uint32_t width, uint32_t height, const char* title )
 
 Window::~Window ()
 {
-  glfwTerminate ();
-  spdlog::info ( "GLFW Window Terminated" );
+  if ( m_window == main_window )
+    {
+      main_window = nullptr;
+      is_glfw_init = false;
+      glfwTerminate ();
+      spdlog::info ( "GLFW Window Terminated" );
+    }
 }
 
 void
@@ -78,6 +84,10 @@ Window::init () noexcept
       glfwTerminate ();
       return;
     }
+
+  glfwSetKeyCallback ( m_window, Events::InputEvent::_OnKeyCallback );
+  glfwSetCursorPosCallback ( m_window, Events::InputEvent::_OnMouseMoveCallback );
+  glfwSetMouseButtonCallback ( m_window, Events::InputEvent::_OnMouseClickCallback );
 
   glfwMakeContextCurrent ( m_window );
 
@@ -92,7 +102,7 @@ Window::init () noexcept
   glfwGetFramebufferSize ( m_window, &fx, &fy );
   glViewport ( 0, 0, fx, fy );
 
-  __monsta_core_window = m_window;
+  main_window = m_window;
   spdlog::info ( "GLFW Window & GLEW Ready" );
 }
 
@@ -112,13 +122,17 @@ void
 Window::start () noexcept
 {
   spdlog::info ( "[MONSTA]: Starting Renderer" );
+  m_ctx->init ();
+
+  glEnable ( GL_MULTISAMPLE );
   while ( !glfwWindowShouldClose ( m_window ) )
     {
-      glClear ( GL_COLOR_BUFFER_BIT );
-      glClearColor ( 1.0, 1.0, 0.0, 1.0 );
+      m_ctx->run ();
       glfwPollEvents ();
       glfwSwapBuffers ( m_window );
     }
+
+  m_ctx->release ();
   spdlog::info ( "[MONSTA]: Stopping Renderer" );
 }
 

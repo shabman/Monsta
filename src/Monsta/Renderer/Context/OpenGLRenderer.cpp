@@ -16,16 +16,51 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#include "Monsta/Renderer/Context/OpenGLRenderer.h"
 
-#include "Config.h"
-#include "Core/Window.h"
+#include <GL/glew.h>
+#include <memory>
+#include <spdlog/spdlog.h>
 
-#include "Events/InputEvent.h"
-#include "Interfaces/EventListener.h"
+namespace Monsta::Renderer
+{
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+OpenGLRenderer* gl_instance = nullptr;
 
-#endif /* LIB_MONSTA_H */
+OpenGLRenderer::OpenGLRenderer ()
+{
+  spdlog::info ( "[MONSTA]: Allocated OpenGL Renderer" );
+}
+
+OpenGLRenderer::~OpenGLRenderer ()
+{
+  spdlog::info ( "[MONSTA]: Deallocated OpenGL Renderer" );
+}
+
+OpenGLRenderer*
+OpenGLRenderer::getInstance () noexcept
+{
+  if ( !gl_instance )
+    gl_instance = new OpenGLRenderer;
+  return gl_instance;
+}
+
+void
+OpenGLRenderer::init () noexcept
+{
+}
+
+void
+OpenGLRenderer::run () noexcept
+{
+  glClear ( GL_COLOR_BUFFER_BIT );
+  glClearColor ( 1.0, 1.0, 0.0, 1.0 );
+}
+
+void
+OpenGLRenderer::release () noexcept
+{
+  delete this;
+}
+
+}

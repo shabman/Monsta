@@ -1,12 +1,40 @@
 cmake_minimum_required(VERSION 3.8)
 
 project(Monsta)
+
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE MONSTA_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE MONSTA_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
 add_compile_definitions(GLEW_STATIC)
+
+# Configure for Xcode
+# if(APPLE)
+# include_directories(SYSTEM ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+
+# # Collect all source and header files
+# file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.c")
+# file(GLOB_RECURSE HEADERS "include/*.h")
+
+# foreach(FILE ${SOURCES} ${HEADERS})
+# # Get the relative path of each file (relative to CMAKE_SOURCE_DIR)
+# file(RELATIVE_PATH FILE_REL_PATH ${CMAKE_SOURCE_DIR} ${FILE})
+
+# # Get the directory name of the file's relative path
+# get_filename_component(FILE_GROUP_PATH ${FILE_REL_PATH} DIRECTORY)
+
+# # Replace '/' with '\\' to be compatible with Xcode
+# string(REPLACE "/" "\\" GROUP_NAME ${FILE_GROUP_PATH})
+
+# # Group files in their respective folders
+# source_group("${GROUP_NAME}" FILES ${FILE})
+# endforeach()
+
+# # Add executable or library target
+# # add_executable(MonstaDemo ${SOURCES} ${HEADERS})
+# endif()
 
 if(WIN32)
     file(GLOB_RECURSE MONSTA_LIBS_DEBUG CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/lib/Windows/debug/*.lib")
@@ -37,7 +65,7 @@ if(WIN32)
 elseif(LINUX)
     find_package(GLEW REQUIRED)
     find_package(glfw3 3.4 REQUIRED)
-    target_link_libraries(a GLEW::GLEW glfw)
+    target_link_libraries(MonstaDemo GLEW::GLEW glfw)
 elseif(APPLE)
     target_link_libraries(MonstaDemo "-framework CoreServices -framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework OpenAL" ${OPENAL_LIBRARY})
 endif()
