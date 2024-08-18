@@ -14,3 +14,11 @@ lib
 MonstaDemo
 Testing
 Monsta.xcodeproj
+
+.externalToolBuilders
+.settings
+CMakeScripts
+
+.DS_Store
+commands.txt
+TODO.txt
