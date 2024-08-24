@@ -25,29 +25,30 @@
 namespace Monsta::Renderer
 {
 
-OpenGLRenderer* gl_instance = nullptr;
-
 OpenGLRenderer::OpenGLRenderer ()
+    : m_vertices ( 0 )
 {
   spdlog::info ( "[MONSTA]: Allocated OpenGL Renderer" );
 }
 
 OpenGLRenderer::~OpenGLRenderer ()
 {
+  m_vertexObject.destroy ();
   spdlog::info ( "[MONSTA]: Deallocated OpenGL Renderer" );
 }
 
 OpenGLRenderer*
 OpenGLRenderer::getInstance () noexcept
 {
-  if ( !gl_instance )
-    gl_instance = new OpenGLRenderer;
-  return gl_instance;
+  static OpenGLRenderer instance;
+  return &instance;
 }
 
 void
 OpenGLRenderer::init () noexcept
 {
+  m_vertexObject.create ();
+  m_vertexObject.bind ();
 }
 
 void
@@ -60,7 +61,6 @@ OpenGLRenderer::run () noexcept
 void
 OpenGLRenderer::release () noexcept
 {
-  delete this;
 }
 
 }
