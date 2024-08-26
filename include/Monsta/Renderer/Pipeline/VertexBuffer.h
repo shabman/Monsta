@@ -16,19 +16,36 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#ifndef LIB_MONSTA_VERTEX_BUFFER_H
+#define LIB_MONSTA_VERTEX_BUFFER_H
 
-#include "Config.h"
+#include "types.h"
 
-#include "Core/Game.h"
-#include "Core/Window.h"
+#include <GL/glew.h>
+#include <cstdint>
 
-#include "Events/InputEvent.h"
-#include "Events/RenderEvent.h"
-#include "Interfaces/EventListener.h"
+namespace Monsta::Renderer
+{
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+class VertexBuffer final
+{
+private:
+  uint32_t m_vbo;
 
-#endif /* LIB_MONSTA_H */
+public:
+  VertexBuffer ();
+  ~VertexBuffer ();
+
+public:
+  [[maybe_unused]] uint32_t create () noexcept;
+  void destroy () noexcept;
+
+  void bind () const noexcept;
+  void bufferData ( size_t, const void*, const BufferMode& ) const noexcept;
+
+  void setAttribute ( uint32_t, int, unsigned int, int, void*, uint32_t ) const noexcept;
+};
+
+}
+
+#endif /* LIB_MONSTA_VERTEX_BUFFER_H */

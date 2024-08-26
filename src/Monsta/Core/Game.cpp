@@ -16,19 +16,16 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#include "Monsta/Core/Game.h"
 
-#include "Config.h"
+namespace Monsta::Core
+{
 
-#include "Core/Game.h"
-#include "Core/Window.h"
+Game::Game ()
+{
+}
+Game::~Game ()
+{
+}
 
-#include "Events/InputEvent.h"
-#include "Events/RenderEvent.h"
-#include "Interfaces/EventListener.h"
-
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
-
-#endif /* LIB_MONSTA_H */
+}

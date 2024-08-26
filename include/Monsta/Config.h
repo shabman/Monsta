@@ -52,8 +52,21 @@
 #endif
 
 #define MONSTA_OPENGL_MAJOR_VERSION 4
-#define MONSTA_OPENGL_MINOR_VERSION 5
+#define MONSTA_OPENGL_MINOR_VERSION 1
 
 // clang-format on
+
+#ifdef MONSTA_UTIL_FUNCS
+
+#include <tuple>
+#include <variant>
+
+template <size_t V, typename... T>
+decltype ( auto ) GetParameterPackValue ( T&&... args ) noexcept
+{
+  return std::get<V> ( std::forward_as_tuple ( std::forward<T> ( args )... ) );
+}
+
+#endif
 
 #endif /* LIB_MONSTA_CONFIG_H */

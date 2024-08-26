@@ -35,10 +35,9 @@ class Window;
 namespace Events
 {
 
-enum class RenderEvent
+enum class RenderEventType
 {
   EVENT_START,
-  EVENT_UPDATE,
   EVENT_PAUSE,
   EVENT_DESTROY
 };
@@ -46,17 +45,24 @@ enum class RenderEvent
 class RenderEvent final
 {
 private:
-  static std::set<const Core::Game*> s_eventQueue;
+  static std::set<Core::Game*> s_eventQueue;
 
 public:
   RenderEvent () = delete;
   ~RenderEvent () = delete;
 
 private:
-  friend class Window;
+  friend class Monsta::Core::Window;
 
-  static void copyAll ( const std::set<const Interface::EventListener*>* queueSource ) noexcept;
-  static void dispatchAll ( const RenderEvent& ) noexcept;
+  static void releaseAll () noexcept;
+
+public:
+  static void add ( Core::Game* );
+  static void remove ( Core::Game* );
+  static void remove ( const uint32_t );
+
+  static void dispatchEvent ( const RenderEventType& );
+  static void dispatchTick ( float );
 };
 
 }

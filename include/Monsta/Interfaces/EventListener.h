@@ -22,6 +22,11 @@
 namespace Monsta::Interface
 {
 
+/**
+ * @warning Do not inherit from this class. See `Monsta::Core::Game` for handling render and input events.
+ *
+ * @since 0.0.1
+ */
 class EventListener
 {
 public:
@@ -29,8 +34,35 @@ public:
   virtual ~EventListener () = 0;
 
 public:
+  /**
+   * @brief Triggered when the user presses a key.
+   *
+   * @param key - The key pressed
+   * @param scancode - Scancode related to the key
+   * @param action - Actions related to the key
+   * @param mods - Modifiers of the key
+   *
+   * @see [GLFW Key Input Guide](https://www.glfw.org/docs/latest/input_guide.html#input_key) for more.
+   *
+   */
   virtual void onKeyPressed ( int key, int scancode, int action, int mods ) noexcept = 0;
+  /**
+   * @brief Triggered when the mouse is moved
+   *
+   * @param xpos - The X position of the mouse
+   * @param ypos - The Y position of the mouse
+   *
+   */
   virtual void onMouseMove ( double xpos, double ypos ) noexcept = 0;
+  /**
+   * @brief Triggered when a mouse button is pressed.
+   *
+   * @param button - The button that was pressed (left, right, etc)
+   * @param action - Any actions related to the button
+   * @param mods - Any modifiers related to the button
+   *
+   * @see [GLFW Mouse Input Guide](https://www.glfw.org/docs/latest/input_guide.html#input_mouse) for more.
+   */
   virtual void onMouseClick ( int button, int action, int mods ) noexcept = 0;
 };
 

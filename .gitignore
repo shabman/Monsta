@@ -19,6 +19,14 @@ Monsta.xcodeproj
 .settings
 CMakeScripts
 
+
+Debug
+docs
+profile
+
 .DS_Store
 commands.txt
+codesign.sh
+debug.plist
+profile.sh
 TODO.txt

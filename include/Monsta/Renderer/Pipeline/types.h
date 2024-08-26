@@ -16,47 +16,43 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_OPENGLRENDERER_H
-#define LIB_MONSTA_OPENGLRENDERER_H
+#ifndef LIB_MONSTA_PIPELINE_TYPES_H
+#define LIB_MONSTA_PIPELINE_TYPES_H
 
-#include "Context.h"
-#include "Monsta/Renderer/Pipeline/VertexArray.h"
-
-#include <glm/glm.hpp>
-
-#include <cstdint>
+#include <GL/glew.h>
 
 namespace Monsta::Renderer
 {
 
+/// Determines the specific memory to place the buffer in VRAM
+enum class BufferMode
+{
+  /// Write once, use many times
+  BUFFER_STATIC = GL_STATIC_DRAW,
+  /// Write many times, use many times
+  BUFFER_DYNAMIC = GL_DYNAMIC_DRAW,
+  /// Write once, use few times
+  BUFFER_STREAM = GL_STREAM_DRAW
+};
+
 /**
- * @brief An OpenGL Context that is used to render game objects onto the `Monsta::Core::Window`.
+ * @brief When a shader is compiled this value is returned to determine
+ * whether the shader did compile successfully or not.
  *
  * @since 0.0.1
  */
-class OpenGLRenderer final : public Context
+typedef struct shader_result_t
 {
-private:
-  uint32_t m_vertices;
-  VertexArray m_vertexArray;
-
-protected:
-  OpenGLRenderer ();
-  ~OpenGLRenderer () override;
-
-public:
   /**
-   * @brief Gets the address of the current context
-   *
-   * @return A pointer to the current context.
+   * @brief If the shader compiled, OpenGL will return a program ID to access the shader program.
    */
-  static OpenGLRenderer* getInstance () noexcept;
-
-  void init () noexcept override;
-  void run () noexcept override;
-  void release () noexcept override;
-};
+  uint32_t programId;
+  /**
+   * @brief If the shader compiled, this value will be set to true.
+   */
+  bool isCompiled;
+} ShaderResult;
 
 }
 
-#endif /* LIB_MONSTA_OPENGLRENDERER_H */
+#endif /* LIB_MONSTA_PIPELINE_TYPES_H */

@@ -16,19 +16,34 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#ifndef LIB_MONSTA_INVALID_SHADER_EXCEPTION_H
+#define LIB_MONSTA_INVALID_SHADER_EXCEPTION_H
 
-#include "Config.h"
+#include <stdexcept>
 
-#include "Core/Game.h"
-#include "Core/Window.h"
+namespace Monsta
+{
 
-#include "Events/InputEvent.h"
-#include "Events/RenderEvent.h"
-#include "Interfaces/EventListener.h"
+/**
+ * @brief An exception class that throws an error if a GLSL Shader program is invalid
+ *
+ * @since 0.0.1
+ */
+class InvalidShaderException final : public std::exception
+{
+public:
+  /**
+   * @brief Returns the cause of the exception
+   *
+   * @return A C-Styled string with the reason of the exception
+   */
+  const char*
+  what () const _NOEXCEPT override
+  {
+    return "Shader source is empty or invalid";
+  }
+};
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+}
 
-#endif /* LIB_MONSTA_H */
+#endif /* LIB_MONSTA_INVALID_SHADER_EXCEPTION_H */

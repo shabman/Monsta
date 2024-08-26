@@ -27,6 +27,12 @@
 namespace Monsta::Core
 {
 
+/**
+ * @brief Creates one main window to display 3D/2D Graphics.
+ * You can only have ONE window per program.
+ *
+ * @since 0.0.1
+ */
 class Window final
 {
 private:
@@ -38,23 +44,75 @@ private:
   uint32_t m_height;
 
 public:
+  /**
+   * @brief Constructor for initialising a GLFW Window.
+   *
+   * @param width - Width of the window.
+   * @param height - height of the window.
+   * @param title - Title of the window (if applicable).
+   */
   Window ( uint32_t, uint32_t, const char* );
   ~Window ();
 
 public:
+  /**
+   * @brief Initialises the GLFW Window and creates an OpenGL Context.
+   */
   void init () noexcept;
+  /**
+   * @brief Manually closes the GLFW Window and destroys the OpenGL Context.
+   */
   void close () noexcept;
 
 public:
+  /**
+   * @brief Attaches a specific renderer to the window. Different OSes have different
+   * Rendering Frameworks (Windows DirectX, Apple Metal, Android OpenGLES, etc), so this
+   * method allows you to manually specify which context to use. The default is OpenGL.
+   *
+   * @param context - The renderer context the window will use to render game objects.
+   *
+   * @note If a context that is not supported on the current OS is given, the fall-back
+   * will use OpenGL as the context.
+   */
   void attachContext ( const Renderer::Context* ) noexcept;
+  /**
+   * @brief Starts the renderer and creates the main game loop.
+   */
   void start () noexcept;
 
 public:
+  /**
+   * @brief Gets a pointer to the GLFW Window.
+   *
+   * @return A pointer to the GLFW Window in use.
+   *
+   * @note It is recommended to not directly modify the GLFW Window.
+   */
   GLFWwindow* getCoreWindow () const noexcept;
+  /**
+   * @brief Gets the current title of the window.
+   *
+   * @return The title of the current window.
+   */
   const char* getTitle () const noexcept;
+  /**
+   * @brief Gets the current context on the window.
+   *
+   * @return The context used on the current window.
+   */
   Renderer::Context* getContext () const noexcept;
-
+  /**
+   * @brief Gets the width of the window.
+   *
+   * @return The width of the window.
+   */
   uint32_t getWidth () const noexcept;
+  /**
+   * @brief Gets the height of the window.
+   *
+   * @return The height of the window.
+   */
   uint32_t getHeight () const noexcept;
 };
 

@@ -16,19 +16,31 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#ifndef LIB_MONSTA_GAME_OBJECT_H
+#define LIB_MONSTA_GAME_OBJECT_H
 
-#include "Config.h"
+#include "Monsta/Renderer/Pipeline/Shader.h"
 
-#include "Core/Game.h"
-#include "Core/Window.h"
+namespace Monsta::Interface
+{
 
-#include "Events/InputEvent.h"
-#include "Events/RenderEvent.h"
-#include "Interfaces/EventListener.h"
+class GameObject
+{
+private:
+  Renderer::Shader* m_shader;
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+public:
+  GameObject ();
+  virtual ~GameObject () = 0;
 
-#endif /* LIB_MONSTA_H */
+public:
+  virtual void draw () = 0;
+  virtual void stop () = 0;
+
+public:
+  virtual void deselect () noexcept;
+};
+
+}
+
+#endif /* LIB_MONSTA_GAME_OBJECT_H */

@@ -16,14 +16,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "Monsta/Events/InputEvent.h"
-#include <iostream>
+#define MONSTA_UTIL_FUNCS
 
-template <size_t V, typename... T>
-decltype ( auto ) GetParameterPackValue ( T&&... args ) noexcept
-{
-  return std::get<V> ( std::forward_as_tuple ( std::forward<T> ( args )... ) );
-}
+#include "Monsta/Events/InputEvent.h"
+#include "Monsta/Config.h"
+#include "Monsta/Events/EventHelper.h"
 
 namespace Monsta::Events
 {
@@ -63,6 +60,12 @@ InputEvent::dispatch ( const InputType& inputMode, EventArgs... data )
 }
 
 void
+InputEvent::releaseAll () noexcept
+{
+  s_eventQueue.clear ();
+}
+
+void
 InputEvent::_OnKeyCallback ( GLFWwindow* /* window */, int key, int scancode, int action, int mods )
 {
   dispatch ( InputType::EVENT_KEY_CALLBACK, key, scancode, action, mods );
@@ -83,24 +86,19 @@ InputEvent::_OnMouseClickCallback ( GLFWwindow* /* window */, int button, int ac
 void
 InputEvent::add ( const Interface::EventListener* clazz )
 {
-  s_eventQueue.emplace ( clazz );
+  EventHelper::add ( &s_eventQueue, clazz );
 }
 
 void
 InputEvent::remove ( const Interface::EventListener* clazz )
 {
-  auto pos = std::find ( s_eventQueue.begin (), s_eventQueue.end (), clazz );
-  if ( pos != s_eventQueue.end () )
-    {
-      s_eventQueue.erase ( pos );
-    }
+  EventHelper::remove ( &s_eventQueue, clazz );
 }
 
 void
 InputEvent::remove ( const uint32_t index )
 {
-  auto i = *std::next ( s_eventQueue.begin (), index );
-  s_eventQueue.erase ( i );
+  EventHelper::remove ( &s_eventQueue, index );
 }
 
 }

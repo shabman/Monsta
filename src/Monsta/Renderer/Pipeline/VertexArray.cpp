@@ -16,47 +16,59 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_OPENGLRENDERER_H
-#define LIB_MONSTA_OPENGLRENDERER_H
-
-#include "Context.h"
 #include "Monsta/Renderer/Pipeline/VertexArray.h"
 
-#include <glm/glm.hpp>
-
-#include <cstdint>
+#include <GL/glew.h>
+#include <spdlog/spdlog.h>
 
 namespace Monsta::Renderer
 {
 
-/**
- * @brief An OpenGL Context that is used to render game objects onto the `Monsta::Core::Window`.
- *
- * @since 0.0.1
- */
-class OpenGLRenderer final : public Context
+VertexArray::VertexArray ()
+    : m_vao ( 0 )
 {
-private:
-  uint32_t m_vertices;
-  VertexArray m_vertexArray;
-
-protected:
-  OpenGLRenderer ();
-  ~OpenGLRenderer () override;
-
-public:
-  /**
-   * @brief Gets the address of the current context
-   *
-   * @return A pointer to the current context.
-   */
-  static OpenGLRenderer* getInstance () noexcept;
-
-  void init () noexcept override;
-  void run () noexcept override;
-  void release () noexcept override;
-};
-
+  spdlog::info ( "[RENDERER]: VAO Object Created" );
 }
 
-#endif /* LIB_MONSTA_OPENGLRENDERER_H */
+VertexArray::~VertexArray ()
+{
+  this->destroy ();
+  this->unbind ();
+  spdlog::info ( "[RENDERER]: VAO Object Deleted" );
+}
+
+uint32_t
+VertexArray::create () noexcept
+{
+  if ( this->m_vao == 0 )
+    {
+      glGenVertexArrays ( 1, &this->m_vao );
+      glEnableVertexAttribArray ( 0 );
+    }
+  return this->m_vao;
+}
+
+void
+VertexArray::destroy () noexcept
+{
+  glDeleteVertexArrays ( 1, &this->m_vao );
+  this->m_vao = 0;
+}
+
+void
+VertexArray::bind () noexcept
+{
+  if ( this->m_vao == 0 )
+    {
+      spdlog::warn ( "[RENDERER]: Binding a VAO with 0, not the allocated value" );
+    }
+  glBindVertexArray ( this->m_vao );
+}
+
+void
+VertexArray::unbind () noexcept
+{
+  glBindVertexArray ( 0 );
+}
+
+}

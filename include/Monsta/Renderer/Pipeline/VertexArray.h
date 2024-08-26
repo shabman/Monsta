@@ -16,19 +16,31 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LIB_MONSTA_H
-#define LIB_MONSTA_H
+#ifndef LIB_MONSTA_VERTEX_ARRAY_H
+#define LIB_MONSTA_VERTEX_ARRAY_H
 
-#include "Config.h"
+#include <cstdint>
 
-#include "Core/Game.h"
-#include "Core/Window.h"
+namespace Monsta::Renderer
+{
 
-#include "Events/InputEvent.h"
-#include "Events/RenderEvent.h"
-#include "Interfaces/EventListener.h"
+class VertexArray final
+{
+private:
+  uint32_t m_vao;
 
-#include "Renderer/Context/Context.h"
-#include "Renderer/Context/OpenGLRenderer.h"
+public:
+  VertexArray ();
+  ~VertexArray ();
 
-#endif /* LIB_MONSTA_H */
+public:
+  [[maybe_unused]] uint32_t create () noexcept;
+  void destroy () noexcept;
+
+  void bind () noexcept;
+  void unbind () noexcept;
+};
+
+}
+
+#endif /* LIB_MONSTA_VERTEX_ARRAY_H */

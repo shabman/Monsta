@@ -22,6 +22,14 @@
 namespace Monsta::Renderer
 {
 
+/**
+ * @brief Pure Virtual Class for Renderer Context's to inherit from.
+ *
+ * @note This is only for classes that define a Renderer Context Abstraction Layer.
+ * Such examples would be like `OpenGLRenderer`.
+ *
+ * @since 0.0.1
+ */
 class Context
 {
 public:
@@ -29,8 +37,21 @@ public:
   virtual ~Context () = 0;
 
 public:
+  /**
+   * @brief Called before the game loop is about to start. Used to
+   * initialise or allocate resources.
+   */
   virtual void init () noexcept = 0;
+  /**
+   * @brief Called every frame in the game loop. Used to render objects
+   * with the given Renderer.
+   */
   virtual void run () noexcept = 0;
+  /**
+   * @brief Releases all resources that were initialised, triggers
+   * the onDestroy event in the `Monsta::Core::Game` class. This is invoked
+   * after the game loop and when the program is about to terminate.
+   */
   virtual void release () noexcept = 0;
 };
 

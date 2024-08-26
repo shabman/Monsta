@@ -1,11 +1,19 @@
+/**
+ * This file is to be removed
+ * It is not relevant so piss off with your LICENSE bull shit
+ */
+
 #include <Monsta/Monsta.h>
 #include <iostream>
 
-class SampleListener : public Monsta::Interface::EventListener
+class SampleListener : public Monsta::Core::Game
 {
 public:
   SampleListener () = default;
-  ~SampleListener () override = default;
+  ~SampleListener () override
+  {
+    std::cout << "released from stack\n";
+  }
 
 public:
   void
@@ -32,6 +40,29 @@ public:
         std::cout << "Mouse Left Click\n";
       }
   }
+
+  void
+  onStart () override
+  {
+    std::cout << "Starting game class\n";
+  }
+
+  void
+  onUpdate ( float dt ) override
+  {
+    std::cout << "On Update\n";
+  }
+
+  void
+  onPause () override
+  {
+  }
+
+  void
+  onDestroy () override
+  {
+    std::cout << "Destroying game class\n";
+  }
 };
 
 int
@@ -41,12 +72,10 @@ main ()
   Monsta::Renderer::OpenGLRenderer* renderer = Monsta::Renderer::OpenGLRenderer::getInstance ();
 
   SampleListener listener;
-  Monsta::Events::InputEvent::add ( &listener );
+  Monsta::Events::RenderEvent::add ( &listener );
 
   window.init ();
   window.attachContext ( renderer );
 
   window.start ();
-
-  Monsta::Events::InputEvent::remove ( &listener );
 }

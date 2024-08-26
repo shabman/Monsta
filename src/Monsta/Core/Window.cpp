@@ -25,8 +25,10 @@
 #include "Monsta/Config.h"
 #include "Monsta/Core/Window.h"
 #include "Monsta/Events/InputEvent.h"
+#include "Monsta/Events/RenderEvent.h"
 #include "Monsta/Renderer/Context/OpenGLRenderer.h"
 
+#include <chrono>
 #include <spdlog/spdlog.h>
 
 static GLFWwindow* main_window = nullptr;
@@ -36,7 +38,7 @@ namespace Monsta::Core
 {
 
 Window::Window ( uint32_t width, uint32_t height, const char* title )
-    : m_width ( width ), m_height ( height ), m_title ( title )
+    : m_width ( width ), m_height ( height ), m_title ( title ), m_window ( nullptr ), m_ctx ( nullptr )
 {
   if ( main_window != nullptr || is_glfw_init )
     {
@@ -52,8 +54,8 @@ Window::Window ( uint32_t width, uint32_t height, const char* title )
 
   is_glfw_init = true;
 
-  glfwWindowHint ( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-  glfwWindowHint ( GLFW_CONTEXT_VERSION_MINOR, 3 );
+  glfwWindowHint ( GLFW_CONTEXT_VERSION_MAJOR, MONSTA_OPENGL_MAJOR_VERSION );
+  glfwWindowHint ( GLFW_CONTEXT_VERSION_MINOR, MONSTA_OPENGL_MINOR_VERSION );
   glfwWindowHint ( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
   glfwWindowHint ( GLFW_SAMPLES, 4 );
 #ifdef MONSTA_PLAT_MAC
@@ -121,16 +123,48 @@ Window::attachContext ( const Renderer::Context* context ) noexcept
 void
 Window::start () noexcept
 {
+  if ( main_window == nullptr )
+    {
+      spdlog::error ( "[MONSTA]: Aborting Renderer. Window is not alive" );
+      return;
+    }
   spdlog::info ( "[MONSTA]: Starting Renderer" );
   m_ctx->init ();
+
+  // Clock
+  constexpr int FPS_TICK = 60;
+  const auto refreshTime = std::chrono::duration_cast<std::chrono::nanoseconds> ( std::chrono::seconds ( 1 ) ) / FPS_TICK;
+  auto prevTimePoint = std::chrono::steady_clock::now ();
+
+  // Start Event
+  Events::RenderEvent::dispatchEvent ( Events::RenderEventType::EVENT_START );
 
   glEnable ( GL_MULTISAMPLE );
   while ( !glfwWindowShouldClose ( m_window ) )
     {
+      // Timestamp
+      std::chrono::time_point timePoint = std::chrono::steady_clock::now ();
+      std::chrono::nanoseconds deltaTime = timePoint - prevTimePoint;
+      prevTimePoint = timePoint;
+
       m_ctx->run ();
       glfwPollEvents ();
       glfwSwapBuffers ( m_window );
+
+      // Update Game Classes
+      Events::RenderEvent::dispatchTick ( std::chrono::duration_cast<std::chrono::duration<float> > ( deltaTime ).count () );
+
+      // Sleep
+      std::chrono::nanoseconds sleepTime = refreshTime - deltaTime;
+      if ( sleepTime.count () > 0 )
+        {
+          std::this_thread::sleep_for ( sleepTime );
+        }
     }
+
+  // End Event
+  Events::RenderEvent::dispatchEvent ( Events::RenderEventType::EVENT_DESTROY );
+  Events::RenderEvent::releaseAll ();
 
   m_ctx->release ();
   spdlog::info ( "[MONSTA]: Stopping Renderer" );

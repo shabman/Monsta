@@ -32,6 +32,11 @@ class Window;
 namespace Monsta::Events
 {
 
+/**
+ * @brief The enumerations of current events supported
+ *
+ * @since 0.0.1
+ */
 enum class InputType
 {
   EVENT_KEY_CALLBACK,
@@ -39,6 +44,13 @@ enum class InputType
   EVENT_MOUSE_CLICKED
 };
 
+/**
+ * @brief Handles GLFW Input events and distributes them to all subscribed listeners
+ *
+ * @note You do not need to use this class, it is handled internally
+ *
+ * @since 0.0.1
+ */
 class InputEvent final
 {
 private:
@@ -47,6 +59,22 @@ private:
 public:
   InputEvent () = delete;
   ~InputEvent () = delete;
+
+protected:
+  /**
+   * @brief Since most of the methods are called internally, specific methods
+   * are marked as private to disallow developers from calling them directly.
+   * Friend classes are classes that are allowed to directly invoke these methods.
+   * Since `RenderEvent` manages all of these methods, you do not need to use the `InputEvent` class
+   * directly.
+   */
+  friend class RenderEvent;
+
+  /**
+   * @brief Removes all classes from the event queue. This is called
+   * when the program is terminating.
+   */
+  static void releaseAll () noexcept;
 
 private:
   friend class Monsta::Core::Window;
@@ -59,8 +87,23 @@ private:
   static void _OnMouseClickCallback ( GLFWwindow*, int, int, int );
 
 public:
+  /**
+   * @brief Adds a new listener class to the Input Listener queue.
+   *
+   * @param clazz - The class that wants to listen for input events.
+   */
   static void add ( const Interface::EventListener* );
+  /**
+   * @brief Removes a class from the Input Listener queue.
+   *
+   * @param clazz - The class to remove from the queue.
+   */
   static void remove ( const Interface::EventListener* );
+  /**
+   * @brief Removes an index from the Input Listener queue.
+   *
+   * @param index - The index to remove from the queue.
+   */
   static void remove ( const uint32_t );
 };
 

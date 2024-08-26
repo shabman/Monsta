@@ -4,6 +4,7 @@ project(Monsta)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(GCC_COVERAGE_COMPILE_FLAGS, "-fsanitize=address")
 
 file(GLOB_RECURSE MONSTA_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE MONSTA_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
@@ -35,7 +36,6 @@ add_compile_definitions(GLEW_STATIC)
 # # Add executable or library target
 # # add_executable(MonstaDemo ${SOURCES} ${HEADERS})
 # endif()
-
 if(WIN32)
     file(GLOB_RECURSE MONSTA_LIBS_DEBUG CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/lib/Windows/debug/*.lib")
     file(GLOB_RECURSE MONSTA_LIBS_RELEASE CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/lib/Windows/release/*.lib")
