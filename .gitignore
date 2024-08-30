@@ -1,0 +1,11 @@
+# Utility Folders
+.vscode
+.idea
+
+# Build Folders
+Lib
+Build
+Benchmarks
+Demo
+Scripts
+
